@@ -1,0 +1,1 @@
+export const VALID_SOCIAL_MEDIAS = ["Facebook", "Twitter", "Instagram", "LinkedIn", "Tiktok"];

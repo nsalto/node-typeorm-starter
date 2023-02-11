@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  app:
+    build: .
+    depends_on:
+      - postgres
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./:/usr/src/app/
+      - /usr/src/app/node_modules
+    env_file:
+      - .env
+
+  postgres:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=concrypto
+    ports:
+      - "5430:5432"
+    volumes:
+      - ./create-schema.sql:/docker-entrypoint-initdb.d/create-schema.sql
+
+  pgadmin-compose:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "server@myapp.de"
+      PGADMIN_DEFAULT_PASSWORD: "1234"
+    ports:
+      - "16543:80"
+    depends_on:
+      - postgres
